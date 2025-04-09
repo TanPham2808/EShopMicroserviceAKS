@@ -1,3 +1,4 @@
+using EShop.API.Middlewares;
 using EShop.Core;
 using EShop.Infrastructure;
 
@@ -12,6 +13,9 @@ builder.Services.AddControllers();
 
 // Build the web application
 var app = builder.Build();
+
+// Middleware
+app.UseExceptionHandlingMiddleware();
 
 //Routing
 app.UseRouting();
