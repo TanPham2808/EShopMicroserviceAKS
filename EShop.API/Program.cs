@@ -22,6 +22,20 @@ builder.Services.AddAutoMapper(typeof(ApplicationUserMappingProfile).Assembly);
 // Bổ sung FluentValidation
 builder.Services.AddFluentValidationAutoValidation();
 
+//Add API explorer services
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// Ở đây chỉ cho phép frontend (chạy ở http://localhost:4200) gọi API.
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder => {
+        builder.WithOrigins("http://localhost:4200") // Thay đổi địa chỉ này thành địa chỉ frontend
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+    });
+});
+
 // Build the web application
 var app = builder.Build();
 
@@ -30,6 +44,11 @@ app.UseExceptionHandlingMiddleware();
 
 //Routing
 app.UseRouting();
+
+// Use Swagger
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseCors();
 
 //Auth
 app.UseAuthentication();
