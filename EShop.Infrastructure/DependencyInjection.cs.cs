@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EShop.Core.RepositoryContracts;
+using EShop.Infrastructure.DbContext;
 using EShop.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,6 +15,9 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
         services.AddTransient<IUsersRepository, UsersRepository>();
+
+        // Đăng ký DapperDbContext
+        services.AddTransient<DapperDbContext>();
         return services;
     }
 }
