@@ -1,4 +1,5 @@
 ﻿
+using Dapper;
 using EShop.Core.DTO;
 using EShop.Core.Entities;
 using EShop.Core.RepositoryContracts;
@@ -19,7 +20,23 @@ namespace EShop.Infrastructure.Repositories
         {
             user.UserID = Guid.NewGuid();
 
-            return user;
+            string query = @"
+                INSERT INTO public.""Users"" 
+                (""UserID"", ""Email"", ""PersonName"", ""Gender"", ""Password"") 
+                VALUES(@UserID, @Email, @PersonName, @Gender, @Password)";
+
+            var parameters = new
+            {
+                user.UserID,
+                user.Email,
+                user.PersonName,
+                user.Gender,
+                user.Password
+            };
+
+            int rowCountAffected = await _dbContext.DbConnection.ExecuteAsync(query, user);
+
+            return rowCountAffected > 0 ? user : null;
         }
 
         public async Task<ApplicationUser?> GetUserByEmailAndPassword(string? email, string? password)
