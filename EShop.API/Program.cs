@@ -1,3 +1,4 @@
+﻿using System.Text.Json.Serialization;
 using EShop.API.Middlewares;
 using EShop.Core;
 using EShop.Infrastructure;
@@ -9,7 +10,9 @@ builder.Services.AddInfrastructure();
 builder.Services.AddCore();
 
 // Add controller to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options => {
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); // Chuyển từ string về enum
+});
 
 // Build the web application
 var app = builder.Build();
