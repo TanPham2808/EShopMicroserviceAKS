@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using EShop.API.Middlewares;
 using EShop.Core;
+using EShop.Core.Mapper;
 using EShop.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,9 @@ builder.Services.AddCore();
 builder.Services.AddControllers().AddJsonOptions(options => {
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); // Chuyển từ string về enum
 });
+
+// Bổ sung Auto Mapper
+builder.Services.AddAutoMapper(typeof(ApplicationUserMappingProfile).Assembly);
 
 // Build the web application
 var app = builder.Build();
